@@ -18,6 +18,16 @@ chrome.contextMenus.onClicked.addListener(function(clickData){
   }
 });
 
+chrome.runtime.onMessage.addListener(
+  function(request, send, sendResponse){
+    if (request.greeting == "updatebadge"){
+      chrome.storage.sync.get('storagequeue', function(data){
+        chrome.browserAction.setBadgeText({text: '' + data.storagequeue.length});
+      });
+    }
+  }
+);
+
 function clearqueue(){
   queue = [];
 }
