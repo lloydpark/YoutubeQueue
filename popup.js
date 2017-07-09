@@ -21,6 +21,6 @@ window.onload = function(){
     backgroundpage.clearqueue();
     chrome.storage.sync.clear();
     chrome.browserAction.setBadgeText({text: ''});
-    chrome.browserAction.setPopup("popup.html");
+    
   }
 };

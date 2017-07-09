@@ -5,17 +5,32 @@ var contextMenuItem = {
 };
 
 var queue = [];
+var counter = 0;
 
 chrome.contextMenus.create(contextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function(clickData){
-  if (clickData.menuItemId == "addQueue"){
-    queue.push(clickData.linkUrl);
-    chrome.storage.sync.set({'storagequeue': queue}, function(){
-      chrome.browserAction.setBadgeText({text: '' + queue.length});
-      console.log(clickData.linkUrl + "added to queue");
-    });
-  }
+
+  chrome.storage.sync.get('storagequeue', function(data){
+
+    if (typeof data.storagequeue == 'undefined'){
+      if (clickData.menuItemId == "addQueue"){
+        counter = 0;
+        clearqueue();
+        queue.push(clickData.linkUrl);
+        chrome.storage.sync.set({'storagequeue': queue}, function(){
+          chrome.browserAction.setBadgeText({text: '' + queue.length});
+          console.log(clickData.linkUrl + "added to queue");
+        });
+      }
+    }else{
+      data.storagequeue.push(clickData.linkUrl);
+      chrome.storage.sync.set(data, function(){
+          chrome.browserAction.setBadgeText({text: '' + data.storagequeue.length});
+          console.log(clickData.linkUrl + "added to queue");
+      });
+    }
+  });
 });
 
 chrome.runtime.onMessage.addListener(
