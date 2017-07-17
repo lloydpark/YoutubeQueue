@@ -11,6 +11,7 @@ chrome.contextMenus.create(contextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function(clickData){
 
+
   chrome.storage.sync.get('storagequeue', function(data){
 
     if (typeof data.storagequeue == 'undefined'){
@@ -42,6 +43,8 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
+
+
 
 function clearqueue(){
   queue = [];

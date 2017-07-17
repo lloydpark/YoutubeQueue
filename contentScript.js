@@ -4,6 +4,7 @@ var vid = $('video').get(0);
 vid.addEventListener('ended', playnext);
 
 
+
 function playnext(){
 
   chrome.storage.sync.get('storagequeue', function(data){
