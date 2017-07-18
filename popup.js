@@ -6,7 +6,6 @@ window.onload = function(){
   chrome.storage.sync.get('storagequeue', function(data)
   {
 
-
     if (!data){
       $("#video-data").empty();
     }
@@ -16,12 +15,9 @@ window.onload = function(){
       for (i = 0; i<Readysize; i++){
           callYoutubeAPI(data.storagequeue[i], i);
       }
-
-
       console.log(JSONdata);
     }
   })
-
 
   function sortJSONdata(){
       JSONdata.sort(function(a, b){
@@ -79,4 +75,13 @@ window.onload = function(){
     chrome.browserAction.setBadgeText({text: ''});
 
   };
+
+  document.getElementById("next").onclick = function(){
+    chrome.storage.sync.get('storagequeue', function(data){
+      var nextvideo = data.storagequeue.shift();
+      chrome.storage.sync.set(data);
+      chrome.runtime.sendMessage({greeting: "updatebadge"});
+      chrome.tabs.update(null, {url: nextvideo});
+    })
+  }
 };
